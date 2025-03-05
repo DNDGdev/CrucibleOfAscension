@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1595bd7f6ec11364ca4af695940fc21c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Prefabs/Controller/DragButtonBase.prefab
+  uploadId: 497184

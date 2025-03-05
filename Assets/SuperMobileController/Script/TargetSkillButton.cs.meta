@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f2eefe93fdcd52646b1c33c122914d54
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Script/TargetSkillButton.cs
+  uploadId: 497184

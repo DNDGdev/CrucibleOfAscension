@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d94f5e2584c3b4047854b1644f6af88d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Script/Enums.cs
+  uploadId: 497184

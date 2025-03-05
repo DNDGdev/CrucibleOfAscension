@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dcdf0cbaff4164f43991ce05f2a920f8
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Prefabs/LandMarker/Shader/SolidProjector
+    1.shader
+  uploadId: 497184

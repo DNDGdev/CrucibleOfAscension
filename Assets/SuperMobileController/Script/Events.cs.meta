@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 25b00436e6e7a734a882d914ea99fab9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Script/Events.cs
+  uploadId: 497184

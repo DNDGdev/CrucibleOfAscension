@@ -1,0 +1,548 @@
+using System;
+using System.Collections;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace SuperMobileController
+{
+    public class TargetSkillButton : ControlBase
+    {
+        [Header("General Settings")]
+        public string inputName;    // Skill name which pass to skill handler
+        public float draggableRadiusModifier = 0;   //The default draggable area of joystick / Skill button is the image width of the outer circle.  This is used to adjust the default area 
+        public Transform relativeTransform; //Set only if you want the result relative to the target object (e.g.The camera)
+
+        [Header("Result Callback Settings")]
+        public OnTargetResultEvent inputEvent;  //Callback for end drag / end touch - Function(string SkillName, Vector2 TargetVector)
+        public OnDragBeginEvent beginDragEvent;  //CallBack when Drag Begin - Function(string SkillName)
+        public float draggingEventCallInterval = 1; //The interval for calling drag event
+        public OnTargetResultEvent draggingEvent; //Callback when dragging - unction(string SkillName, Vector2 TargetVector)
+
+        [Header("Skill Button Settings")]
+        public float cooldownSecond = 2f;   //Cooldown of the button
+        public bool canCancel = true; //Is cancel available for this button
+        public int quantityLeft = -1; //Quantity left for this button to be used (-1 = unlimited)
+        public GameObject player;   //The object which this controller is controlling 
+        public Texture skillAreaTexture;
+        public float skillAreaSize = 3;   //The size of the skill area (3 means 3 times image width)
+        public Color skillAreaColour = Color.cyan;
+        public Texture skillTargetMarkerTexture;
+        public float skillMarkerSize = 1;
+        public Color skillMarkerColour = Color.green;
+        public LayerMask markerIgnoreLayers;
+        public Sprite buttonImage;
+        public Sprite analogImage;
+        public Sprite analogAreaImage;
+        public Vector2 centerOffset;
+
+        //private variables
+        private Image skillAreaImage;    //The ground area image when dragging
+        private Image analogTargetImage; //The image for drag target
+        private GameObject skillAreaMarker;
+        private GameObject skillTargetMarker;
+        private GameObject[] allCancelAreas;
+        private float currentCoolDown = 0;
+        private Image cooldownImage; //The image for reloading 
+        private Image disableImage; //Image to be enabled when button is disabled 
+        private Text quantityText;
+        private Text cooldownText;
+        private Vector2 currentTarget;
+        private bool isEnabled = true; //Is the button Enabled
+        private Vector2 cachedDraggingInput = Vector2.zero;
+        private Projector skillAreaProjector;    //The projector object of the skill area
+        private Projector targetMarkerProjector; //The projector for drag target
+        private Image buttonInnerImage;
+        private RectTransform rect;
+        private Vector2 parentPosition;
+        private Vector3 relativeForward;
+        private float maxDisplacement = 0;
+        private bool IsEndDrag = false;
+        private Vector2 draggingTarget;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            //Setup the event handler
+            EventTrigger trigger = GetComponent<EventTrigger>();
+
+            //set data (we cache the data at start as GetComponent is slow)
+            rect = gameObject.GetComponent<RectTransform>();
+
+            skillAreaImage = transform.Find("AreaImage").GetComponent<Image>();
+            analogTargetImage = transform.Find("TargetMarker").GetComponent<Image>();
+            cooldownImage = transform.Find("Cooldown").GetComponent<Image>();
+            disableImage = transform.Find("Disable").GetComponent<Image>();
+            quantityText = transform.Find("QuantityText").GetComponent<Text>();
+            cooldownText = cooldownImage.transform.Find("Text").GetComponent<Text>();
+
+            if (skillAreaTexture != null && skillAreaSize > 0)
+            {
+                var skillAreaProjectorObj = new GameObject("SkillAreaMarker", new Type[] { typeof(Projector) });
+                skillAreaProjector = skillAreaProjectorObj.GetComponent<Projector>();
+                skillAreaProjector.nearClipPlane = 0.01f;
+                skillAreaProjector.farClipPlane = 1000;
+                skillAreaProjector.fieldOfView = 50;
+                skillAreaProjector.aspectRatio = 1;
+                skillAreaProjector.orthographic = true;
+                skillAreaProjector.orthographicSize = skillAreaSize;
+                skillAreaProjector.ignoreLayers = markerIgnoreLayers;
+                skillAreaProjector.material = new Material(Shader.Find("Projector/NoTransparentSolidProjector"));
+                skillAreaProjector.material.SetTexture("_ShadowTex", skillAreaTexture);
+                skillAreaProjector.material.SetColor("_Color", skillAreaColour);
+                skillAreaProjectorObj.SetActive(false);
+                skillAreaProjectorObj.transform.SetParent(transform);
+                skillAreaProjectorObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                skillAreaProjectorObj.transform.localPosition = new Vector3(0, 20, 0);
+            }
+            else
+            {
+                targetMarkerProjector = null;
+            }
+
+            if (skillTargetMarkerTexture != null && skillMarkerSize > 0)
+            {
+                var skillMarkerProjectorObj = new GameObject("SkillMarker", new Type[] { typeof(Projector) });
+                targetMarkerProjector = skillMarkerProjectorObj.GetComponent<Projector>();
+                targetMarkerProjector.nearClipPlane = 0.01f;
+                targetMarkerProjector.farClipPlane = 1000;
+                targetMarkerProjector.fieldOfView = 50;
+                targetMarkerProjector.aspectRatio = 1;
+                targetMarkerProjector.orthographic = true;
+                targetMarkerProjector.orthographicSize = skillMarkerSize;
+                targetMarkerProjector.ignoreLayers = markerIgnoreLayers;
+                targetMarkerProjector.material = new Material(Shader.Find("Projector/NoTransparentSolidProjector"));
+                targetMarkerProjector.material.SetTexture("_ShadowTex", skillTargetMarkerTexture);
+                targetMarkerProjector.material.SetColor("_Color", skillMarkerColour);
+                skillMarkerProjectorObj.SetActive(false);
+                skillMarkerProjectorObj.transform.SetParent(transform);
+                skillMarkerProjectorObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                skillMarkerProjectorObj.transform.localPosition = new Vector3(0, 100, 0);
+            }
+            else
+            {
+                targetMarkerProjector = null;
+            }
+            if (buttonImage != null)
+            {
+                buttonInnerImage = transform.Find("ButtonInner/Image").GetComponent<Image>();
+                buttonInnerImage.sprite = buttonImage;
+            }
+
+            if (analogImage != null && analogTargetImage != null)
+            {
+                analogTargetImage.sprite = analogImage;
+            }
+            if (analogAreaImage != null && skillAreaImage != null)
+            {
+                skillAreaImage.sprite = analogAreaImage;
+            }
+
+            allCancelAreas = GameObject.FindObjectsOfType<CancelArea>().Select(c => c.gameObject).ToArray();
+            SetCancelAreasEnabled(false);
+
+            //If we want the direction relative to target (character) transform, be add begin drag event listener
+            EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
+            pointerDownEntry.eventID = EventTriggerType.PointerDown;
+            pointerDownEntry.callback.AddListener((data) => { OnPointerDown((PointerEventData)data); });
+            trigger.triggers.Add(pointerDownEntry);
+
+            EventTrigger.Entry pointerUpEntry = new EventTrigger.Entry();
+            pointerUpEntry.eventID = EventTriggerType.PointerUp;
+            pointerUpEntry.callback.AddListener((data) => { OnPointerUp((PointerEventData)data); });
+            trigger.triggers.Add(pointerUpEntry);
+
+            EventTrigger.Entry dragEntry = new EventTrigger.Entry();
+            dragEntry.eventID = EventTriggerType.Drag;
+            dragEntry.callback.AddListener((data) => { OnDrag((PointerEventData)data); });
+            trigger.triggers.Add(dragEntry);
+
+            EventTrigger.Entry endDragEntry = new EventTrigger.Entry();
+            endDragEntry.eventID = EventTriggerType.EndDrag;
+            endDragEntry.callback.AddListener((data) => { OnEndDrag((PointerEventData)data); });
+            trigger.triggers.Add(endDragEntry);
+
+            EventTrigger.Entry beginDragEntry = new EventTrigger.Entry();
+            beginDragEntry.eventID = EventTriggerType.BeginDrag;
+            beginDragEntry.callback.AddListener((data) => { OnBeginDrag((PointerEventData)data); });
+            trigger.triggers.Add(beginDragEntry);
+
+
+            //hide the area when not dragging, set max dragging displacement
+            if (skillAreaImage != null)
+            {
+                skillAreaImage.enabled = false;
+            }
+            if (skillAreaProjector != null && player != null)
+            {
+                skillAreaMarker = GameObject.Instantiate(skillAreaProjector.gameObject, player.transform);
+                skillAreaMarker.gameObject.SetActive(false);
+            }
+            if (analogTargetImage != null)
+            {
+                analogTargetImage.enabled = false;
+            }
+            if (targetMarkerProjector != null && player != null)
+            {
+                skillTargetMarker = GameObject.Instantiate(targetMarkerProjector.gameObject, player.transform);
+                skillTargetMarker.gameObject.SetActive(false);
+            }
+            maxDisplacement = (skillAreaImage.rectTransform.rect.width / 2) + draggableRadiusModifier;
+
+            //Set quantity text
+            if (quantityLeft > -1 && quantityText != null)
+            {
+                quantityText.text = quantityLeft.ToString();
+            }
+        }
+
+        private void Update()
+        {
+            if (currentCoolDown > 0)
+            {
+                currentCoolDown -= Time.deltaTime;
+                cooldownImage.fillAmount = currentCoolDown / cooldownSecond;
+
+                if (cooldownText != null)
+                {
+                    if (currentCoolDown > 0)
+                    {
+                        cooldownText.text = currentCoolDown.ToString("0.0");
+                    }
+                    else
+                    {
+                        cooldownText.text = "";
+                    }
+                }
+            }
+        }
+
+        //Pointer down event callback, fire when touch down
+        public override void OnPointerDown(PointerEventData eventArgs)
+        {
+            //Exit function when it's not a valid action
+            if (!isEnabled || currentCoolDown > 0)
+            {
+                return;
+            }
+
+            //make the dragging button on top of others
+            if (skillAreaImage != null)
+            {
+                skillAreaImage.enabled = true;
+                transform.SetAsLastSibling();
+            }
+
+            //set postion of the dragging control
+            parentPosition = new Vector2(transform.position.x, transform.position.y);
+
+            //Call begin drag event
+            if (beginDragEvent != null)
+            {
+                beginDragEvent.Invoke(inputName);
+            }
+
+            //Cancel area set to visible 
+            if (canCancel)
+                SetCancelAreasEnabled(true);
+
+            //If we want the direction relative to target (character) transform, we store the initial forward direction as reference
+            if (relativeTransform != null)
+            {
+                relativeForward = relativeTransform.forward;
+            }
+            OnDrag(eventArgs);
+        }
+
+        //Pointer down up callback, fire when touch up
+        public override void OnPointerUp(PointerEventData eventArgs)
+        {
+            //Exit function when it's not a valid action
+            if (!isEnabled || currentCoolDown > 0)
+            {
+                return;
+            }
+
+            if (canCancel)
+                SetCancelAreasEnabled(false);
+
+            //Handle a single tap (not dragged)
+            OnEndDrag(eventArgs);
+        }
+
+        //Pointer begin drag callback, fire when start to drag
+        public override void OnBeginDrag(PointerEventData eventArgs)
+        {
+            //Exit function when it's not a valid action
+            if (!isEnabled || currentCoolDown > 0)
+            {
+                return;
+            }
+
+            //cancel area should always on top
+            foreach (var ca in allCancelAreas)
+            {
+                ca.transform.SetAsLastSibling();
+            }
+
+            //Start calling Dragging callback conotinuously
+            if (draggingEvent != null && draggingEventCallInterval > 0)
+            {
+                IsEndDrag = false;
+                StartCoroutine(DraggingCallBack(draggingEventCallInterval));
+            }
+        }
+
+        //Pointer on drag callback, fire when dragging
+        public override void OnDrag(PointerEventData eventArgs)
+        {
+            //Exit function when it's not a valid action
+            if (!isEnabled || currentCoolDown > 0)
+            {
+                return;
+            }
+
+            //Calculate the position
+            Vector2 relativePosition = eventArgs.position - parentPosition;
+            Vector2 analogTargetImagePosition;
+
+
+            //if the displacement is larger then the radius, we set the magnitude of the relative position to max displacement
+            if (relativePosition.magnitude > maxDisplacement)
+            {
+                relativePosition = relativePosition.normalized * maxDisplacement;
+            }
+
+            analogTargetImagePosition = relativePosition;
+
+            relativePosition = CommonFunctions.GetRelativeTransformedPosition(relativePosition, relativeForward);
+            currentTarget = relativePosition / maxDisplacement * skillAreaSize;
+
+            //We add offset to the result vector
+            if (player != null)
+            {
+                Vector3 offectVector = player.transform.rotation * new Vector3(centerOffset.x, 0, centerOffset.y);
+                currentTarget += new Vector2(offectVector.x, offectVector.z);
+            }
+
+            cachedDraggingInput = currentTarget;
+
+            if (analogTargetImage != null)
+            {
+                //show the marker when dragging
+                analogTargetImage.transform.localPosition = analogTargetImagePosition;
+                analogTargetImage.enabled = true;
+            }
+            if (skillAreaMarker != null && player != null)
+            {
+                //Show skill area when dragging
+                skillAreaMarker.transform.localPosition = new Vector3(centerOffset.x, 100, centerOffset.y);
+                skillAreaMarker.gameObject.SetActive(true);
+            }
+            if (skillTargetMarker != null && player != null && skillAreaSize != 0)
+            {
+                skillTargetMarker.gameObject.SetActive(true);
+            }
+        }
+
+        public override void OnEndDrag(PointerEventData eventArgs)
+        {
+            //Exit function when it's not a valid action
+            if (!isEnabled || currentCoolDown > 0)
+            {
+                return;
+            }
+
+
+            if (skillAreaImage != null)
+            {
+                //hide the area when end dragging
+                skillAreaImage.enabled = false;
+            }
+            if (analogTargetImage != null)
+            {
+                //hide the marker when end dragging
+                analogTargetImage.enabled = false;
+            }
+            if (skillAreaMarker != null)
+            {
+                //hide the area when end dragging
+                skillAreaMarker.SetActive(false);
+            }
+            if (skillTargetMarker != null)
+            {
+                //hide the marker when end dragging
+                skillTargetMarker.SetActive(false);
+            }
+
+            Vector2 relativePosition = eventArgs.position - parentPosition;
+
+            //if the displacement is larger then the radius, we set the magnitude of the relative position to max displacement
+            if (relativePosition.magnitude > maxDisplacement)
+            {
+                relativePosition = relativePosition.normalized * maxDisplacement;
+            }
+            relativePosition = CommonFunctions.GetRelativeTransformedPosition(relativePosition, relativeForward);
+
+            //If End on Cancel Area, We do not send the result
+            if (eventArgs.pointerEnter != null)
+            {
+                CancelArea cancelButton = eventArgs.pointerEnter.GetComponent<CancelArea>();
+                if (cancelButton != null)
+                {
+                    return;
+                }
+            }
+
+            //handle cooldown
+            if (cooldownSecond > 0 && cooldownImage != null)
+            {
+                currentCoolDown = cooldownSecond;
+            }
+            //result callback
+            ReturnResult(relativePosition);
+        }
+
+        //Result callback
+        private void ReturnResult(Vector2 relativePosition)
+        {
+            if (inputEvent != null)
+            {
+                relativePosition = relativePosition / maxDisplacement * skillAreaSize;
+                //We add offset to the result vector
+                if (player != null)
+                {
+                    Vector3 offectVector = player.transform.rotation * new Vector3(centerOffset.x, 0, centerOffset.y);
+                    relativePosition += new Vector2(offectVector.x, offectVector.z);
+                }
+
+                RaycastHit[] hits = Physics.RaycastAll(skillTargetMarker.transform.position, Vector3.down);
+                float y = player.transform.position.y;
+                if (hits.Where(c => markerIgnoreLayers != (markerIgnoreLayers | (1 << c.collider.gameObject.layer))).Any())
+                {
+                    y = hits.First(c => markerIgnoreLayers != (markerIgnoreLayers | (1 << c.collider.gameObject.layer))).point.y;
+                }
+
+                //callback function of the control
+                inputEvent.Invoke(inputName, new Vector3(relativePosition.x, y, relativePosition.y));
+            }
+
+            //handle quantity
+            if (quantityLeft > 0)
+            {
+                quantityLeft -= 1;
+                quantityText.text = quantityLeft.ToString();
+                if (quantityLeft == 0)
+                {
+                    SetEnabled(false);
+                }
+            }
+            //stop the dragging callback
+            IsEndDrag = true;
+            cachedDraggingInput = Vector2.zero;
+        }
+        //Keep calling the dragging callback until drag ended
+        private IEnumerator DraggingCallBack(float interval)
+        {
+            if (!IsEndDrag)
+            {
+                RaycastHit[] hits = Physics.RaycastAll(skillTargetMarker.transform.position, Vector3.down);
+                float y = player.transform.position.y;
+                if (hits.Where(c => markerIgnoreLayers != (markerIgnoreLayers | (1 << c.collider.gameObject.layer))).Any())
+                {
+                    y = hits.First(c => markerIgnoreLayers != (markerIgnoreLayers | (1 << c.collider.gameObject.layer))).point.y;
+                }
+
+                draggingEvent.Invoke(inputName, new Vector3(currentTarget.x, y, currentTarget.y));
+                yield return new WaitForSeconds(interval);
+                StartCoroutine(DraggingCallBack(interval));
+            }
+            else
+            {
+                IsEndDrag = false;
+            }
+        }
+
+        //Enable or disable all cancel areas
+        private void SetCancelAreasEnabled(bool isEnabled)
+        {
+            foreach (var ca in allCancelAreas)
+            {
+                ca.GetComponent<Image>().enabled = isEnabled;
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (player != null && skillTargetMarker != null && cachedDraggingInput.magnitude > 0)
+            {
+                //Calculate the position and display target marker
+                Vector2 relativeMarkerPosition = new Vector2(cachedDraggingInput.x, cachedDraggingInput.y);
+                skillTargetMarker.transform.position = new Vector3(relativeMarkerPosition.x, 20, relativeMarkerPosition.y) + player.transform.position;
+
+            }
+        }
+
+        //Set variables methods
+        //method to enable / disable the control
+        public void SetEnabled(bool isEnabled)
+        {
+            this.isEnabled = isEnabled;
+            if (disableImage != null)
+            {
+                if (isEnabled)
+                {
+                    disableImage.enabled = false;
+                }
+                else
+                {
+                    disableImage.enabled = true;
+                }
+            }
+        }
+
+        public void SetQuantity(int quantity)
+        {
+            quantityLeft = quantity;
+            quantityText.text = quantity.ToString();
+            if (quantity != 0)
+            {
+                SetEnabled(true);
+            }
+            else
+            {
+                SetEnabled(false);
+            }
+        }
+
+        public void SetCoolDown(float seconds)
+        {
+            cooldownSecond = seconds;
+        }
+
+        public void SetSkillMarkerSize(float size)
+        {
+            skillMarkerSize = size;
+            if (skillTargetMarkerTexture != null)
+            {
+                targetMarkerProjector.orthographicSize = skillMarkerSize;
+            }
+        }
+
+        public void SetSkillAreaSize(float size)
+        {
+            skillAreaSize = size;
+            if (skillAreaTexture != null)
+            {
+                skillAreaProjector.orthographicSize = skillAreaSize;
+            }
+        }
+
+        public void SetButtonImage(Sprite image)
+        {
+            buttonImage = image;
+            buttonInnerImage.sprite = image;
+        }
+    }
+}

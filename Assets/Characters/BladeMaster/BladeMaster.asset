@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6f09ec81d835440ad0f5ec67398924, type: 3}
+  m_Name: BladeMaster
+  m_EditorClassIdentifier: 
+  characterType: 0
+  characterName: Darius
+  characterIcon: {fileID: 21300000, guid: 1328fdac4f9659944ba1f9ef1a937afc, type: 3}
+  stats:
+    combatStats:
+      maxHealth: 0
+      attackDamage: 0
+      evasionChance: 0
+      resilienceChance: 0
+      attackType: 0
+    attrebiuteRates:
+      Haste: 0
+      Range: 0
+      Might: 0
+      Vitality: 0
+      resilience: 0

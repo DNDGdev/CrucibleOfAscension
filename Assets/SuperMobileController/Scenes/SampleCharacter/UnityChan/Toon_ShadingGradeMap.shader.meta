@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ca035891872022e4f80c952b3916e450
+timeCreated: 1485041920
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Scenes/SampleCharacter/UnityChan/Toon_ShadingGradeMap.shader
+  uploadId: 497184

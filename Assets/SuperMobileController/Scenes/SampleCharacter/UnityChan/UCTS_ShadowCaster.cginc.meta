@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ae8d06deb98501947846000ba6cd3ab2
+timeCreated: 1518248457
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Scenes/SampleCharacter/UnityChan/UCTS_ShadowCaster.cginc
+  uploadId: 497184

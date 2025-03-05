@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 03ad8cceec59f2646a04a3fb76ce0626
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Prefabs/Controller/SimpleSkillButtonBase.prefab
+  uploadId: 497184

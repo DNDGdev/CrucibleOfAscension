@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 22b0c617166e955419e27e73bf34bc8d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Prefabs/Controller/TouchInputBase.prefab
+  uploadId: 497184

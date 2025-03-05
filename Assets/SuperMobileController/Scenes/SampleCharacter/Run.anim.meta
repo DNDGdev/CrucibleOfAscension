@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2140f743e634a7a4cade61cd74c54887
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Scenes/SampleCharacter/Run.anim
+  uploadId: 497184

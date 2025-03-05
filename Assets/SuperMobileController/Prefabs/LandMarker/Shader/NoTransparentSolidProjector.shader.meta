@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1df5afefb0a96d6489ec37f4f345884b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196338
+  packageName: (All-In-One) Super Mobile Controller
+  packageVersion: 3.2
+  assetPath: Assets/SuperMobileController/Prefabs/LandMarker/Shader/NoTransparentSolidProjector.shader
+  uploadId: 497184
