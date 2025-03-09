@@ -8,6 +8,7 @@ public class SkillController : MonoBehaviour
     [Header("References")]
     public Card card;
     public Skill skillData;
+    public PlayerController player;
     public CardView cardView => GetComponent<CardView>();
     public DraggableUI draggableUI => GetComponent<DraggableUI>();
     public enum SkillState { Idle, Cooldown, Ready, Cast }
@@ -20,8 +21,8 @@ public class SkillController : MonoBehaviour
 
     public SlotIndex slotIndex;
 
-    public bool autoStart;
-    private void Start()
+
+    public virtual void SetUp()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         currentState = SkillState.Idle;
@@ -29,25 +30,26 @@ public class SkillController : MonoBehaviour
         if (draggableUI != null)
             draggableUI.onSwipe += Activate;
 
-        if(autoStart)
-        {
-            InitSkill(card);
-        }
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (canvasGroup != null && draggableUI != null)
         {
            draggableUI.enabled = canvasGroup.interactable = (currentState == SkillState.Ready || currentState == SkillState.Cast);
         }
+      
     }
-    public void InitSkill(Card _card)
+    public void InitSkill(Card _card, PlayerController _player)
     {
         card = _card;
+        player = _player;
         skillData = card.skill;
-        cardView.Init(card);
-
+        if(cardView.isActiveAndEnabled)
+        {
+            cardView.Init(card);
+        }
+        SetUp();
         StartCooldown();
     }
 
@@ -64,7 +66,10 @@ public class SkillController : MonoBehaviour
         while (cooldownTimer > 0)
         {
             cooldownTimer -= Time.deltaTime;
-            cardView.UpdateUI(cooldownTimer, cooldownTimer / skillData.cooldownTime);
+            if (cardView.isActiveAndEnabled)
+            {
+                cardView.UpdateUI(cooldownTimer, cooldownTimer / skillData.cooldownTime);
+            }
             yield return null;
         }
 
@@ -80,7 +85,6 @@ public class SkillController : MonoBehaviour
 
         currentState = SkillState.Cast;
         Debug.Log("Skill Activated!");
-
         // Simulating skill effect duration
         if (skillData.duration > 0)
         {
@@ -94,9 +98,49 @@ public class SkillController : MonoBehaviour
         }
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         currentState = SkillState.Idle;
-        //StartCooldown();
+        StartCooldown();
     }
+
+    public virtual void ManageHit()
+    {
+        if (player.Target == null)
+        {
+            Debug.LogError("Target is null!");
+            return;
+        }
+
+        if (TargetIsInRange())
+        {
+            player.Target.GetComponent<HealthManager>()?.TakeDamage((int)skillData.Stats.attackDamage);
+        }
+        else
+        {
+            Debug.Log("Target not in range");
+        }
+    }
+
+  
+    public bool TargetIsInRange()
+    {
+        if (player.Target == null)
+        {
+            Debug.LogError("Target is null!");
+            return false;
+        }
+
+        float distance = Vector3.Distance(player.Target.position, player.transform.position);
+        float range = Mathf.Max(0, skillData.Stats.rangeType.Range); // Ensures non-negative range
+        //Debug.Log($"Player Position: {player.transform.position}, Target Position: {player.Target.position}");
+        //Debug.Log($"Distance to target: {Vector3.Distance(player.Target.position, player.transform.position)}");
+
+        //Debug.Log($"Distance to target: {distance}");
+        //Debug.Log($"Skill range: {range}");
+        //Debug.Log($"Is target in range? {distance <= range}");
+
+        return distance <= range;
+    }
+
 }

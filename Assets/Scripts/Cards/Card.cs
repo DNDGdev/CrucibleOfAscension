@@ -12,12 +12,15 @@ public struct Skill
 {
     public Sprite skillIcon;
     public string skillName;
+    public string skillAnimation;
     public string info;
     public SkillType skillType;
     public SophisticationTier tier;
+    public CombatStats Stats;
     public float cooldownTime;
     public float duration;
     public float effectValue; // Used for damage, healing, shield value, etc.
+    public EffectItem effectItem;
 }
 
 public enum SkillType
@@ -42,4 +45,12 @@ public enum SkillIndex
     slot2,
     slot3,
     slot4
+}
+
+[System.Serializable]
+public struct EffectItem
+{
+    public GameObject SkillObject;
+    public Vector3 SpawnPos;
+    public ParticleSystem particle;
 }

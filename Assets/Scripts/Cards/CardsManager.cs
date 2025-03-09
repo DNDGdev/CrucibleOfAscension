@@ -13,11 +13,13 @@ public class CardsManager : MonoBehaviour
     public List<Card> SkillCards = new List<Card>();
     public List<SkillItem> AllSkills = new List<SkillItem>();
     public List<SkillItem> BoardSkills = new List<SkillItem>();
+    public SkillItem BasicAttack;
 
     public SkillController ActiveSkill;
 
-    private void Start()
+    private void Awake()
     {
+        BasicAttack.skillController.InitSkill(BasicAttack.card, GetComponent<PlayerController>());
         CreateSkills();
         InitBoardSkills();
     }
@@ -45,7 +47,7 @@ public class CardsManager : MonoBehaviour
             skillItem.skillController.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
             skillItem.skillController.gameObject.SetActive(true);
-            skillItem.skillController.InitSkill(skillItem.card);
+            skillItem.skillController.InitSkill(skillItem.card , GetComponent<PlayerController>());
         }
     }
 

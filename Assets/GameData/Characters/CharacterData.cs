@@ -24,7 +24,7 @@ public struct CombatStats
     public float attackDamage;
     public float evasionChance;
     public float resilienceChance; // Chance to resist card effects
-    public AttackType attackType;
+    public RangeType rangeType;
 }
 
 [System.Serializable]
@@ -45,9 +45,17 @@ public enum CharacterType
     Hunter,
     Warden
 }
+
 [System.Serializable]
 public enum AttackType
 {
     Melee,
     Range
+}
+
+[System.Serializable]
+public struct RangeType
+{
+    public AttackType type;
+    public float Range;
 }

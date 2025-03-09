@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1179734231453177023, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_Name
-      value: SkillCard
+      value: Slice
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_Pivot.x
@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5039535966399839999, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_SizeDelta.x

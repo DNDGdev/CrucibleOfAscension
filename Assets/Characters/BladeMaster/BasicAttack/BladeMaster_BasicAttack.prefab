@@ -108,7 +108,43 @@ PrefabInstance:
     - {fileID: 5661242871408239952, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     - {fileID: 6778214514185435124, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     - {fileID: 2044141992213729455, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+    - {fileID: 8432384560056019091, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1179734231453177023, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6444877332365346458}
   m_SourcePrefab: {fileID: 100100000, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+--- !u!1 &7794981205992974801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1179734231453177023, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+  m_PrefabInstance: {fileID: 8967251879971798382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6444877332365346458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7794981205992974801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ea8461809b9ef45a2158a7e80584f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 0}
+  skillData:
+    skillIcon: {fileID: 0}
+    skillName: 
+    skillAnimation: 
+    info: 
+    skillType: 0
+    tier: 0
+    cooldownTime: 0
+    duration: 0
+    effectValue: 0
+    SkillObject: {fileID: 0}
+  player: {fileID: 0}
+  currentState: 0
+  slotIndex: 0

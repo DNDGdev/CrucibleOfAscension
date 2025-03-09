@@ -17,11 +17,13 @@ MonoBehaviour:
   characterIcon: {fileID: 21300000, guid: 1328fdac4f9659944ba1f9ef1a937afc, type: 3}
   stats:
     combatStats:
-      maxHealth: 0
-      attackDamage: 0
+      maxHealth: 150
+      attackDamage: 11
       evasionChance: 0
       resilienceChance: 0
-      attackType: 0
+      rangeType:
+        type: 0
+        Range: 0
     attrebiuteRates:
       Haste: 0
       Range: 0

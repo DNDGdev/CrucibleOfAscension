@@ -15,10 +15,23 @@ MonoBehaviour:
   skill:
     skillIcon: {fileID: 21300000, guid: c3be05f5440ab3642967e47c0bea416f, type: 3}
     skillName: Basic Attack
+    skillAnimation: Attack
     info: 
     skillType: 0
     tier: 0
+    Stats:
+      maxHealth: 0
+      attackDamage: 12
+      evasionChance: 0
+      resilienceChance: 0
+      rangeType:
+        type: 0
+        Range: 3
     cooldownTime: 1
     duration: 1
-    effectValue: 0
+    effectValue: 0.3
+    effectItem:
+      SkillObject: {fileID: 4463391435092163703, guid: 0a87af8e0a7e6884ebcc890e096e9abb, type: 3}
+      SpawnPos: {x: 0, y: 0, z: 0}
+      particle: {fileID: 0}
   SkillPrefab: {fileID: 7794981205992974801, guid: 51e3f0c4f93a0ed4892ef0bee2722b7e, type: 3}
