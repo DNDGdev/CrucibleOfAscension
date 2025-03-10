@@ -21,6 +21,7 @@ public struct Skill
     public float duration;
     public float effectValue; // Used for damage, healing, shield value, etc.
     public EffectItem effectItem;
+    public DamageItem damageItem;
 }
 
 public enum SkillType

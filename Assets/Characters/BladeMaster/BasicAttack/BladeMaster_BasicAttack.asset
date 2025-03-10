@@ -34,4 +34,11 @@ MonoBehaviour:
       SkillObject: {fileID: 4463391435092163703, guid: 0a87af8e0a7e6884ebcc890e096e9abb, type: 3}
       SpawnPos: {x: 0, y: 0, z: 0}
       particle: {fileID: 0}
+    damageItem:
+      DamageAmount: 12
+      HealAmount: 0
+      KnockBackAmount: {x: 0, y: 0, z: 0}
+      crowdControl: 0
+      HitEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
+      HitAnimation: 
   SkillPrefab: {fileID: 7794981205992974801, guid: 51e3f0c4f93a0ed4892ef0bee2722b7e, type: 3}

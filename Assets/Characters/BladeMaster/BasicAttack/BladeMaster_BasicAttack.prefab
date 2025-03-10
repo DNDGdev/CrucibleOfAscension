@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8772175933985502088, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
+    - target: {fileID: -8772175933985502088, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
     - target: {fileID: 1179734231453177023, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
       propertyPath: m_Name
       value: BladeMaster_BasicAttack
@@ -106,7 +114,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5661242871408239952, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
-    - {fileID: 6778214514185435124, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     - {fileID: 2044141992213729455, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     - {fileID: 8432384560056019091, guid: ad960cbbb84bd6f4ba6c36a55a46d1cd, type: 3}
     m_RemovedGameObjects: []
@@ -141,10 +148,29 @@ MonoBehaviour:
     info: 
     skillType: 0
     tier: 0
+    Stats:
+      maxHealth: 0
+      attackDamage: 0
+      evasionChance: 0
+      resilienceChance: 0
+      rangeType:
+        type: 0
+        Range: 0
     cooldownTime: 0
     duration: 0
     effectValue: 0
-    SkillObject: {fileID: 0}
+    effectItem:
+      SkillObject: {fileID: 0}
+      SpawnPos: {x: 0, y: 0, z: 0}
+      particle: {fileID: 0}
+    damageItem:
+      DamageAmount: 0
+      HealAmount: 0
+      KnockBackAmount: {x: 0, y: 0, z: 0}
+      crowdControl: 0
+      HitEffect: {fileID: 0}
+      HitAnimation: 
   player: {fileID: 0}
   currentState: 0
   slotIndex: 0
+  TriggerButton: {fileID: 0}

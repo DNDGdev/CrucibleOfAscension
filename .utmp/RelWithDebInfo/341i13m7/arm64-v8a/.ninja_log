@@ -1,0 +1,12 @@
+# ninja log v5
+58	2458	7632392058440176	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	4ca69a09f57922ac
+2460	5555	7632392082356059	D:/Unity projects/Deck Of Defiance POC/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/341i13m7/obj/arm64-v8a/libswappywrapper.so	2d4e2ab3689884dd
+20	5811	7632392091457603	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	236624030469a31c
+26	6166	7632392094335260	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4669e9b89f21db2b
+51	6182	7632392094805055	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	2e88adb7e13a1225
+38	6342	7632392096402670	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	943002e96ea3e787
+45	6456	7632392097569572	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5748b0226242b80
+13	6623	7632392101197067	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	85fba50a5a9c8239
+33	6992	7632392105012646	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	699aff8dc222bf45
+2	7218	7632392107355576	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	bb60a4d7204b93dc
+7219	7486	7632392110084327	D:/Unity projects/Deck Of Defiance POC/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/341i13m7/obj/arm64-v8a/libgame.so	1575b076db08bdf3

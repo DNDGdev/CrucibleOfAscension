@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BladeMaster_BasicAttack : SkillController
 {
     public Button TriggerButton;
+    public Action onAttack;
 
     public override void Update()
     {
@@ -32,8 +34,18 @@ public class BladeMaster_BasicAttack : SkillController
         player.cardsManager.ActiveSkill = this;
         player.animator.SetTrigger(skillData.skillAnimation);
         skillData.effectItem.particle.Play();
+        onAttack?.Invoke();
 
-        Deactivate();
+        if (audioSrc != null)
+            audioSrc.Play();
 
+        ResetCard();
+
+    }
+
+    public override void ResetCard()
+    {
+        currentState = SkillState.Idle;
+        StartCooldown();
     }
 }

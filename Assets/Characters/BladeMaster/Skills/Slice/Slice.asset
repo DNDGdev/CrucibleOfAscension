@@ -15,10 +15,30 @@ MonoBehaviour:
   skill:
     skillIcon: {fileID: 21300000, guid: 6ac270cb5af314a42af64960c696a8a1, type: 3}
     skillName: Slice
+    skillAnimation: 
     info: 'Effect: 12 damage, +20% damage vs low health targets (HS less than 30%)'
     skillType: 0
     tier: 1
-    cooldownTime: 25
+    Stats:
+      maxHealth: 85
+      attackDamage: 8
+      evasionChance: 12
+      resilienceChance: 22
+      rangeType:
+        type: 0
+        Range: 3
+    cooldownTime: 5
     duration: 0.5
     effectValue: 0
+    effectItem:
+      SkillObject: {fileID: 0}
+      SpawnPos: {x: 0, y: 0, z: 0}
+      particle: {fileID: 0}
+    damageItemm:
+      DamageAmount: 0
+      HealAmount: 0
+      KnockBackAmount: {x: 0, y: 0, z: 0}
+      crowdControl: 0
+      HitEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
+      HitAnimation: 
   SkillPrefab: {fileID: 3235914404551239102, guid: 0842224d84f6c5a4b9625b17cdb0429b, type: 3}

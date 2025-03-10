@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    public SkillController currentSkill;
+    public bool isFull;
     public SlotIndex slotIndex;
 }
 

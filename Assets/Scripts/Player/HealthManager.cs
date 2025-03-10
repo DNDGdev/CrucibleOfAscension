@@ -1,9 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 
 public class HealthManager : MonoBehaviour
 {
     public PlayerController player => GetComponent<PlayerController>();
+    public GameObject PopUp;
+    public Transform spawnPoint;
 
     [Header("Health Settings")]
     private int currentHealth;
@@ -31,7 +35,13 @@ public class HealthManager : MonoBehaviour
         if (currentHealth < 0) currentHealth = 0;
 
         UpdateHealthBar();
+        GameObject popUp =  Instantiate(PopUp, spawnPoint.position, Quaternion.identity, spawnPoint);
+        TextMeshProUGUI txt = popUp.GetComponent<TextMeshProUGUI>();
+        txt.text = damage.ToString();
+        popUp.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
+        // Fade out TMP text and destroy after completion
+        txt.DOFade(0, 0.5f).OnComplete(() => Destroy(txt.gameObject));
         if (currentHealth == 0)
         {
             Die();

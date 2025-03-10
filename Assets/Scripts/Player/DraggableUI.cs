@@ -19,6 +19,12 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         rectTransform = GetComponent<RectTransform>();
     }
 
+    public void ResetDrag()
+    {
+        isMoving = false;
+        releaseVelocity = Vector2.zero;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         lastMousePosition = eventData.position;

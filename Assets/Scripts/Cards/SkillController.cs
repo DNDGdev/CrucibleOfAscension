@@ -11,11 +11,10 @@ public class SkillController : MonoBehaviour
     public PlayerController player;
     public CardView cardView => GetComponent<CardView>();
     public DraggableUI draggableUI => GetComponent<DraggableUI>();
+    public AudioSource audioSrc => GetComponent<AudioSource>();
     public enum SkillState { Idle, Cooldown, Ready, Cast }
 
     public SkillState currentState = SkillState.Idle;
-
-    private CanvasGroup canvasGroup;
 
     private float cooldownTimer = 0f;
 
@@ -24,7 +23,6 @@ public class SkillController : MonoBehaviour
 
     public virtual void SetUp()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
         currentState = SkillState.Idle;
 
         if (draggableUI != null)
@@ -34,9 +32,9 @@ public class SkillController : MonoBehaviour
 
     public virtual void Update()
     {
-        if (canvasGroup != null && draggableUI != null)
+        if (cardView.canvasGroup != null && draggableUI != null)
         {
-           draggableUI.enabled = canvasGroup.interactable = (currentState == SkillState.Ready || currentState == SkillState.Cast);
+           draggableUI.enabled = cardView.canvasGroup.interactable = (currentState == SkillState.Ready || currentState == SkillState.Cast);
         }
       
     }
@@ -45,15 +43,13 @@ public class SkillController : MonoBehaviour
         card = _card;
         player = _player;
         skillData = card.skill;
-        if(cardView.isActiveAndEnabled)
-        {
-            cardView.Init(card);
-        }
+        cardView.Init(card);
+        cardView.OnReset();
         SetUp();
         StartCooldown();
     }
 
-    private void StartCooldown()
+    public void StartCooldown()
     {
         Debug.Log("startCooldown");
         currentState = SkillState.Cooldown;
@@ -84,6 +80,8 @@ public class SkillController : MonoBehaviour
         if (currentState != SkillState.Ready) return;
 
         currentState = SkillState.Cast;
+        cardView.OnActivate();
+
         Debug.Log("Skill Activated!");
         // Simulating skill effect duration
         if (skillData.duration > 0)
@@ -94,14 +92,19 @@ public class SkillController : MonoBehaviour
         else
         {
             Deactivate();
-
         }
     }
 
     public void Deactivate()
     {
-        currentState = SkillState.Idle;
-        StartCooldown();
+        draggableUI.ResetDrag();
+        draggableUI.onSwipe -= Activate;
+        player.cardsManager.ReplaceSkill(this);
+    }
+
+    public virtual void ResetCard()
+    {
+     
     }
 
     public virtual void ManageHit()
@@ -114,7 +117,7 @@ public class SkillController : MonoBehaviour
 
         if (TargetIsInRange())
         {
-            player.Target.GetComponent<HealthManager>()?.TakeDamage((int)skillData.Stats.attackDamage);
+            player.Target.GetComponent<IDamageable>()?.GetHit(skillData.damageItem);
         }
         else
         {

@@ -75,6 +75,22 @@ public class CardsManager : MonoBehaviour
         return selectedSkills;
     }
 
+    public void ReplaceSkill(SkillController skill)
+    {
+        int index = CardSlots.FindIndex(x => x.transform.childCount == 0);
+        SkillItem element = BoardSkills.Find(x => x.skillController == skill);
+        AllSkills.Add(new SkillItem(skill.card, skill));
+
+        var newSkill = GetRandomSkills(1);
+        element = newSkill[0];
+
+        element.skillController.transform.SetParent(CardSlots[index].transform);
+        element.skillController.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        element.skillController.gameObject.SetActive(true);
+        element.skillController.InitSkill(element.card, GetComponent<PlayerController>());
+    }
+
 }
 
 [System.Serializable]
