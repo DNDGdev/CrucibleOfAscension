@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c57e2276cd1ea674e9a2f78c671a9eb5, type: 3}
-  m_Name: PrecisionStrike
+  m_Name: Mend
   m_EditorClassIdentifier: 
   skill:
-    skillIcon: {fileID: 6416580310616032551, guid: c68838cd724d5cc4a89b38f46c68a7d1, type: 3}
-    skillName: PrecisionStrike
+    skillIcon: {fileID: 7784534840033359009, guid: a134bef9b57e6a041956476f631a3856, type: 3}
+    skillName: Mend
     skillAnimation: Dash
-    info: +50% Basic Attack Damage for the next attack
-    skillType: 0
+    info: Resttore 15 HP
+    skillType: 1
     tier: 0
     Stats:
-      maxHealth: 0
+      maxHealth: 15
       attackDamage: 0
       evasionChance: 0
       resilienceChance: 0
       rangeType:
         type: 0
         Range: 0
-    cooldownTime: 6
-    duration: 5
+    cooldownTime: 3
+    duration: 0.5
     effectValue: 0
     effectItem:
-      SkillObject: {fileID: 5785836446428659814, guid: bda76cc8c3e90a340af8410d6a72a2e0, type: 3}
+      SkillObject: {fileID: 4093269552372636773, guid: 789fbfcfd64f7b148b75b04147e51a7b, type: 3}
       SpawnPos: {x: 0, y: 0, z: 0}
       particle: {fileID: 0}
     damageItem:
@@ -41,4 +41,4 @@ MonoBehaviour:
       crowdControl: 0
       HitEffect: {fileID: 0}
       HitAnimation: 
-  SkillPrefab: {fileID: 5902431182953898179, guid: c79876c43b07c9e4eb0fbed52a26e612, type: 3}
+  SkillPrefab: {fileID: 6135612403461781244, guid: 044581e6a3080a546922ec9d52bbe3ea, type: 3}

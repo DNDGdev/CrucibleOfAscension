@@ -81,6 +81,7 @@ public class SkillController : MonoBehaviour
 
         currentState = SkillState.Cast;
         cardView.OnActivate();
+        GameObject newEffect = Instantiate(card.skill.effectItem.SkillObject, player.effectsHolder);
 
         Debug.Log("Skill Activated!");
         // Simulating skill effect duration
@@ -97,6 +98,8 @@ public class SkillController : MonoBehaviour
 
     public void Deactivate()
     {
+        Debug.Log("deactive");
+
         draggableUI.ResetDrag();
         draggableUI.onSwipe -= Activate;
         player.cardsManager.ReplaceSkill(this);
@@ -136,12 +139,12 @@ public class SkillController : MonoBehaviour
 
         float distance = Vector3.Distance(player.Target.position, player.transform.position);
         float range = Mathf.Max(0, skillData.Stats.rangeType.Range); // Ensures non-negative range
-        //Debug.Log($"Player Position: {player.transform.position}, Target Position: {player.Target.position}");
-        //Debug.Log($"Distance to target: {Vector3.Distance(player.Target.position, player.transform.position)}");
+        Debug.Log($"Player Position: {player.transform.position}, Target Position: {player.Target.position}");
+        Debug.Log($"Distance to target: {Vector3.Distance(player.Target.position, player.transform.position)}");
 
-        //Debug.Log($"Distance to target: {distance}");
-        //Debug.Log($"Skill range: {range}");
-        //Debug.Log($"Is target in range? {distance <= range}");
+        Debug.Log($"Distance to target: {distance}");
+        Debug.Log($"Skill range: {range}");
+        Debug.Log($"Is target in range? {distance <= range}");
 
         return distance <= range;
     }

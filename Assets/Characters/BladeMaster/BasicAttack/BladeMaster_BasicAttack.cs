@@ -10,11 +10,11 @@ public class BladeMaster_BasicAttack : SkillController
     public override void Update()
     {
         base.Update();
-        if (player.Target != null)
-        {
-            Debug.Log(TargetIsInRange());
-            player.targetOutline.enabled = TargetIsInRange();
-        }
+        //if (player.Target != null)
+        //{
+        //    Debug.Log(TargetIsInRange());
+        //    player.targetOutline.enabled = TargetIsInRange();
+        //}
     }
     public override void SetUp()
     {

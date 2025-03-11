@@ -21,6 +21,8 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void ResetDrag()
     {
+        Debug.Log("reset drag");
+
         isMoving = false;
         releaseVelocity = Vector2.zero;
     }

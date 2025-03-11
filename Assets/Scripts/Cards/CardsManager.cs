@@ -77,6 +77,7 @@ public class CardsManager : MonoBehaviour
 
     public void ReplaceSkill(SkillController skill)
     {
+        Debug.Log("replace");
         int index = CardSlots.FindIndex(x => x.transform.childCount == 0);
         SkillItem element = BoardSkills.Find(x => x.skillController == skill);
         AllSkills.Add(new SkillItem(skill.card, skill));

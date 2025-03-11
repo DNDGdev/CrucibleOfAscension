@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private CharacterData characterData;
     public Stats playerStats;
@@ -28,11 +28,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         InitializeCharacter(characterData);
     }
 
-    public void GetHit(DamageItem damageItem)
-    {
-        Instantiate(damageItem.HitEffect, transform.position , Quaternion.identity);
-        healthManager.TakeDamage((int)damageItem.DamageAmount);
-    }
 
     public void TriggerManageHit()
     {
@@ -40,7 +35,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             cardsManager.ActiveSkill.ManageHit();
     }
 
-
+    #region Stats Management
     public void AddDamage(float amount)
     {
         cardsManager.BasicAttack.skillController.skillData.damageItem.DamageAmount += amount;
@@ -55,10 +50,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         return cardsManager.BasicAttack.skillController.skillData.damageItem.DamageAmount;
     }
+    public void RestoreHealth(float amount)
+    {
+        healthManager.Heal((int)amount);
+    }
+    #endregion
 
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            healthManager.TakeDamage(20);
+        }
         // Define the direction (forward from the object's perspective)
         Vector3 direction = transform.forward;
 
@@ -69,14 +72,22 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 Debug.Log("Hit: " + hit.collider.name);
                 Target = hit.transform;
-                Target.GetComponent<Outline>().enabled = true;
+
+                if (Target.GetComponent<Outline>())
+                {
+                    Target.GetComponent<Outline>().enabled = true;
+                }
             }
         }
         else
         {
             if(Target != null)
             {
-                Target.GetComponent<Outline>().enabled = false;
+                if (Target.GetComponent<Outline>())
+                {
+                    Target.GetComponent<Outline>().enabled = false;
+                }
+
                 Target = null;
             }
         }

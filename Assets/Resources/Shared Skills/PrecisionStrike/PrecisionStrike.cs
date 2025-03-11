@@ -5,7 +5,6 @@ public class PrecisionStrike : SkillController
     public override void Update()
     {
         base.Update();
-
     }
 
     public override void Activate()
@@ -23,6 +22,9 @@ public class PrecisionStrike : SkillController
         if (audioSrc != null)
             audioSrc.Play();
 
-        Deactivate();
+        if (skillData.duration > 0)
+        {
+            Invoke(nameof(Deactivate), skillData.duration);
+        }
     }
 }
