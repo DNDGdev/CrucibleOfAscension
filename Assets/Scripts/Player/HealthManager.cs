@@ -9,6 +9,7 @@ public class HealthManager : MonoBehaviour ,IDamageable
     public GameObject PopUp;
     public Transform spawnPoint;
     public DamageableItem damageableItem;
+    public HitState hitState;
 
     [Header("Health Settings")]
     [SerializeField] private int currentHealth;
@@ -23,13 +24,30 @@ public class HealthManager : MonoBehaviour ,IDamageable
         if (damageableItem == DamageableItem.Player)
             currentHealth = player.playerStats.combatStats.maxHealth;
 
+        hitState = HitState.Hittable;
         UpdateHealthBar();
     }
 
     public void GetHit(DamageItem damageItem)
     {
-        Instantiate(damageItem.HitEffect, transform.position, Quaternion.identity);
-        TakeDamage((int)damageItem.DamageAmount);
+        switch (hitState)
+        {
+            case HitState.Hittable:
+                Instantiate(damageItem.HitEffect, transform.position, Quaternion.identity);
+                TakeDamage((int)damageItem.DamageAmount);
+                break;
+            case HitState.Blocked:
+                ShowTextPopup("Blocked", Color.white);
+                hitState = HitState.Hittable;
+                break;
+            case HitState.Invulnerable:
+                ShowTextPopup("Invulnerable", Color.cyan);
+
+                break;
+            default:
+                break;
+        }
+      
     }
 
     public int excessDamage = 0; // Store excess damage
@@ -61,6 +79,18 @@ public class HealthManager : MonoBehaviour ,IDamageable
         TextMeshProUGUI txt = popUp.GetComponent<TextMeshProUGUI>();
         txt.text = damage.ToString();
         txt.color = (damageableItem == DamageableItem.shield) ? Color.blue : Color.red;
+        popUp.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        // Fade out TMP text and destroy after completion
+        txt.DOFade(0, 0.5f).OnComplete(() => Destroy(popUp));
+    }
+
+    private void ShowTextPopup(string _txt ,Color color )
+    {
+        GameObject popUp = Instantiate(PopUp, spawnPoint.position, Quaternion.identity, spawnPoint);
+        TextMeshProUGUI txt = popUp.GetComponent<TextMeshProUGUI>();
+        txt.text = _txt;
+        txt.color = color;
         popUp.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
         // Fade out TMP text and destroy after completion
@@ -105,4 +135,11 @@ public enum DamageableItem
     Player,
     shield,
     obstacle
+}
+
+public enum HitState
+{
+    Hittable,      // The player can be hit and take damage.
+    Blocked,       // The player blocked the attack and takes no damage.
+    Invulnerable   // The player cannot be hit or damaged.
 }

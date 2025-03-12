@@ -81,7 +81,10 @@ public class SkillController : MonoBehaviour
 
         currentState = SkillState.Cast;
         cardView.OnActivate();
-        GameObject newEffect = Instantiate(card.skill.effectItem.SkillObject, player.effectsHolder);
+        if (card.skill.effectItem.SkillObject != null)
+        {
+            GameObject newEffect = Instantiate(card.skill.effectItem.SkillObject, player.effectsHolder);
+        }
 
         Debug.Log("Skill Activated!");
         // Simulating skill effect duration

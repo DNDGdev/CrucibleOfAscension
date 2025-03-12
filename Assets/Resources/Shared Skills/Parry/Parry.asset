@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c57e2276cd1ea674e9a2f78c671a9eb5, type: 3}
-  m_Name: Protection
+  m_Name: Parry
   m_EditorClassIdentifier: 
   skill:
-    skillIcon: {fileID: 7277667510922486690, guid: 2e6df814af40e2945b8e3ea9c9bb5115, type: 3}
+    skillIcon: {fileID: 4208804505593057705, guid: 0d29c61fca93e1a46bd413d23ee58a24, type: 3}
     skillName: Protection
     skillAnimation: Dash
     info: Shield absorbing 20 damage
-    skillType: 0
+    skillType: 2
     tier: 0
     Stats:
       maxHealth: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
     duration: 0.5
     effectValue: 0
     effectItem:
-      SkillObject: {fileID: 3505542018137100965, guid: 638db45b6d7d7994a935c45e19e170b1, type: 3}
+      SkillObject: {fileID: 0}
       SpawnPos: {x: 0, y: 0, z: 0}
       particle: {fileID: 0}
     damageItem:

@@ -68,11 +68,11 @@ public class PlayerController : MonoBehaviour
         // Perform the raycast
         if (Physics.Raycast(rayPos.position, direction, out RaycastHit hit, rayDistance, hitableLayer))
         {
-            if(Target == null)
-            {
-                Debug.Log("Hit: " + hit.collider.name);
-                Target = hit.transform;
+            Debug.Log("Hit: " + hit.collider.name);
+            Target = hit.transform;
 
+            if (Target != null)
+            {
                 if (Target.GetComponent<Outline>())
                 {
                     Target.GetComponent<Outline>().enabled = true;
